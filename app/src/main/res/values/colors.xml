@@ -3,7 +3,7 @@
     <color name="colorPing">#009966</color>
     <color name="colorPingRed">#FF0099</color>
     <color name="colorSubscription">#247BA0</color>
-    <color name="colorSelected">#009966</color>
+    <color name="colorSelected">#f2b23a</color>
     <color name="colorUnselected">#999999</color>
     <color name="colorWhite">#CFD8DC</color>
     <color name="colorBlack">#212121</color>
@@ -18,7 +18,7 @@
 
     <color name="colorPrimaryByDark">#2B2B2B</color>
     <color name="colorPrimaryDarkByDark">#161616</color>
-    <color name="colorAccentByDark">#12976F</color>
+    <color name="colorAccentByDark">#f2b23a</color>
     <color name="colorBgByDark">#252525</color>
     <color name="colorTextByDark">#CCCCCC</color>
 </resources>

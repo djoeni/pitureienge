@@ -1,0 +1,6 @@
+[submodule "library/core"]
+	path = library/core
+	url = https://github.com/djoeni/AndroidLibXrayLite
+[submodule "external/xray-core"]
+	path = external/xray-core
+	url = https://github.com/djoeni/Xray-core

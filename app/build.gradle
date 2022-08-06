@@ -1,9 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
-Properties props = new Properties()
-props.load(new FileInputStream(new File('local.properties')))
-
 android {
     compileSdkVersion Integer.parseInt("$compileSdkVer")
     buildToolsVersion "$buildToolsVer"
@@ -14,7 +11,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.v2ray.ang"
+        applicationId "com.gatcha.ang"
         minSdkVersion 21
         targetSdkVersion Integer.parseInt("$targetSdkVer")
         multiDexEnabled true
@@ -22,20 +19,18 @@ android {
         versionName "1.7.17"
     }
 
-    if (props["sign"]) {
-        signingConfigs {
-            release {
-                storeFile file("../key.jks")
-                keyAlias 'ang'
-                keyPassword '123456'
-                storePassword '123456'
-            }
-            debug {
-                storeFile file("../key.jks")
-                keyAlias 'ang'
-                keyPassword '123456'
-                storePassword '123456'
-            }
+    signingConfigs {
+        release {
+            storeFile = rootProject.file('release.keystore')
+            storePassword = 'gatchaNG'
+            keyAlias = 'gatchaNGkey'
+            keyPassword = 'gatchaNG'
+        }
+        debug {
+            storeFile = rootProject.file('release.keystore')
+            storePassword = 'gatchaNG'
+            keyAlias = 'gatchaNGkey'
+            keyPassword = 'gatchaNG'
         }
     }
 
@@ -44,9 +39,8 @@ android {
             minifyEnabled false
             zipAlignEnabled false
             shrinkResources false
-            if (props["sign"]) {
-                signingConfig signingConfigs.release
-            }
+            
+            signingConfig signingConfigs.release            
             ndk.abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
 //            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -54,9 +48,8 @@ android {
             minifyEnabled false
             zipAlignEnabled false
             shrinkResources false
-            if (props["sign"]) {
-                signingConfig signingConfigs.release
-            }
+            
+            signingConfig signingConfigs.release
             ndk.abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
         }
     }
@@ -87,7 +80,7 @@ android {
     android.applicationVariants.all { variant ->
         // assign different version code for each output
         variant.outputs.each { output ->
-            output.outputFileName = "v2rayNG_" + variant.versionName + "_" + output.getFilter(com.android.build.OutputFile.ABI) + ".apk"
+            output.outputFileName = "GatchaNG_" + variant.versionName + "_" + output.getFilter(com.android.build.OutputFile.ABI) + ".apk"
 
                 output.versionCodeOverride =
                     project.ext.versionCodes.get(output.getFilter(com.android.build.OutputFile.ABI), 0) *

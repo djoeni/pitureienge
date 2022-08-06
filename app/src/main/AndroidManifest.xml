@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.v2ray.ang">
+    package="com.gatcha.ang">
 
     <supports-screens
         android:anyDensity="true"
@@ -79,7 +79,10 @@
         <activity
             android:exported="false"
             android:name=".ui.UserAssetActivity" />
-
+        <activity
+            android:exported="false"
+            android:name=".ui.WebViewActivity"
+            android:configChanges="screenSize|orientation" />
         <activity
             android:exported="false"
             android:name=".ui.SubEditActivity" />
@@ -145,15 +148,15 @@
                     android:resource="@xml/app_widget_provider" />
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.v2ray.ang.action.widget.click" />
-                <action android:name="com.v2ray.ang.action.activity" />
+                <action android:name="com.gatcha.ang.action.widget.click" />
+                <action android:name="com.gatcha.ang.action.activity" />
             </intent-filter>
         </receiver>
 
         <service
                 android:exported="true"
                 android:name=".service.QSTileService"
-                android:icon="@drawable/ic_stat_name"
+                android:icon="@drawable/ic_howdy_white_24dp"
                 android:label="@string/app_tile_name"
                 android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
                 android:process=":RunSoLibV2RayDaemon">

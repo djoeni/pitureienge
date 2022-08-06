@@ -6,6 +6,10 @@
     <group
         android:id="@+id/group_main">
         <item
+            android:id="@+id/create_account"
+            android:icon="@drawable/ic_howdy_white_24dp"
+            android:title="@string/title_create_account" />
+        <item
             android:id="@+id/sub_setting"
             android:icon="@drawable/ic_subscriptions_white_24dp"
             android:title="@string/title_sub_setting" />
