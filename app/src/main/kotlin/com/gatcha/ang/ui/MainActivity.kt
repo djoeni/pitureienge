@@ -640,6 +640,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             R.id.create_account -> {
                 startActivity(Intent(this, WebViewActivity::class.java))
             }
+            R.id.telegram_group -> {
+                Utils.openUri(this, AppConfig.telegramGroup)
+            }
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true

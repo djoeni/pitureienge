@@ -151,7 +151,7 @@
 
     <string name="title_pref_feedback">Feedback</string>
     <string name="summary_pref_feedback">Feedback enhancements or bugs to GitHub</string>
-    <string name="summary_pref_tg_group">Join Telegram Group</string>
+    <string name="summary_pref_tg_group">Gatcha Telegram Group</string>
     <string name="toast_tg_app_not_found">Telegram app not found</string>
 
     <string name="title_pref_promotion">Promotion</string>
