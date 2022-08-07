@@ -49,7 +49,7 @@ object SpeedtestUtil {
             if (!TextUtils.isEmpty(allText)) {
                 val tempInfo = allText.substring(allText.indexOf("min/avg/max/mdev") + 19)
                 val temps = tempInfo.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                if (temps.count() > 0 && temps[0].length < 10) {
+                if (temps.isNotEmpty() && temps[0].length < 10) {
                     return temps[0].toFloat().toInt().toString() + "ms"
                 }
             }
@@ -59,7 +59,7 @@ object SpeedtestUtil {
         return "-1ms"
     }
 
-    fun socketConnectTime(url: String, port: Int): Long {
+    private fun socketConnectTime(url: String, port: Int): Long {
         try {
             val socket = Socket()
             synchronized(this) {
@@ -98,8 +98,8 @@ object SpeedtestUtil {
         var conn: HttpURLConnection? = null
 
         try {
-            val url = URL("https",
-                    "www.google.com",
+            val url = URL("http",
+                    "www.gstatic.com",
                     "/generate_204")
 
             conn = url.openConnection(

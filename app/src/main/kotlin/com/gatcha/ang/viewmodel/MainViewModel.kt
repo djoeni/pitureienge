@@ -156,7 +156,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
 
         val ivBinding = DialogConfigFilterBinding.inflate(LayoutInflater.from(context))
-        ivBinding.spSubscriptionId.adapter = ArrayAdapter<String>( context, android.R.layout.simple_spinner_dropdown_item, listRemarks)
+        ivBinding.spSubscriptionId.adapter = ArrayAdapter( context, android.R.layout.simple_spinner_dropdown_item, listRemarks)
         ivBinding.spSubscriptionId.setSelection(checkedItem)
         ivBinding.etKeyword.text = Utils.getEditable(keywordFilter)
         val builder = AlertDialog.Builder(context).setView(ivBinding.root)
@@ -226,9 +226,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     updateTestResultAction.value = intent.getStringExtra("content")
                 }
                 AppConfig.MSG_MEASURE_CONFIG_SUCCESS -> {
-                    val resultPair = intent.getSerializableExtra("content") as Pair<String, Long>
-                    MmkvManager.encodeServerTestDelayMillis(resultPair.first, resultPair.second)
-                    updateListAction.value = getPosition(resultPair.first)
+                    val resultPair = intent.getSerializableExtra("content") as Pair<*, *>
+                    MmkvManager.encodeServerTestDelayMillis(resultPair.first as String,
+                        resultPair.second as Long
+                    )
+                    updateListAction.value = getPosition(resultPair.first as String)
                 }
             }
         }

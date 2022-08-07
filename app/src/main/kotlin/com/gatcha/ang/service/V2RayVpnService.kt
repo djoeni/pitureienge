@@ -17,6 +17,7 @@ import com.gatcha.ang.dto.ERoutingMode
 import com.gatcha.ang.util.MmkvManager
 import com.gatcha.ang.util.MyContextWrapper
 import com.gatcha.ang.util.Utils
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -227,6 +228,7 @@ class V2RayVpnService : VpnService(), ServiceControl {
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun sendFd() {
         val fd = mInterface.fileDescriptor
         val path = File(applicationContext.filesDir, "sock_path").absolutePath
@@ -314,7 +316,7 @@ class V2RayVpnService : VpnService(), ServiceControl {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun attachBaseContext(newBase: Context?) {
         val context = newBase?.let {
-            MyContextWrapper.wrap(newBase,  Utils.getLocale(newBase))
+            MyContextWrapper.wrap(newBase,  Utils.getLocale())
         }
         super.attachBaseContext(context)
     }

@@ -17,8 +17,8 @@ import com.gatcha.ang.util.Utils
 class SubEditActivity : BaseActivity() {
     private lateinit var binding: ActivitySubEditBinding
 
-    var del_config: MenuItem? = null
-    var save_config: MenuItem? = null
+    private var del_config: MenuItem? = null
+    private var save_config: MenuItem? = null
 
     private val subStorage by lazy { MMKV.mmkvWithID(MmkvManager.ID_SUB, MMKV.MULTI_PROCESS_MODE) }
     private val editSubId by lazy { intent.getStringExtra("subId").orEmpty() }
@@ -81,10 +81,6 @@ class SubEditActivity : BaseActivity() {
             toast(R.string.sub_setting_remarks)
             return false
         }
-//        if (TextUtils.isEmpty(subItem.url)) {
-//            toast(R.string.sub_setting_url)
-//            return false
-//        }
 
         subStorage?.encode(subId, Gson().toJson(subItem))
         toast(R.string.toast_success)

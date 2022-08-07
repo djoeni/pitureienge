@@ -11,7 +11,7 @@ import java.util.*
  * 描述:解析二维码图片
  */
 object QRCodeDecoder {
-    val HINTS: MutableMap<DecodeHintType, Any?> = EnumMap(DecodeHintType::class.java)
+    private val HINTS: MutableMap<DecodeHintType, Any?> = EnumMap(DecodeHintType::class.java)
 
     /**
      * 同步解析本地图片二维码。该方法是耗时操作，请在子线程中调用。

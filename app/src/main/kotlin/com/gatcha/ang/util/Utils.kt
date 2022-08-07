@@ -113,7 +113,7 @@ object Utils {
         return ""
     }
 
-    fun tryDecodeBase64(text: String): String? {
+    private fun tryDecodeBase64(text: String): String? {
         try {
             return Base64.decode(text, Base64.NO_WRAP).toString(charset("UTF-8"))
         } catch (e: Exception) {
@@ -247,7 +247,7 @@ object Utils {
         return (isIpv4Address(value) || isIpv6Address(value))
     }
 
-    fun isIpv4Address(value: String): Boolean {
+    private fun isIpv4Address(value: String): Boolean {
         val regV4 = Regex("^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$")
         return regV4.matches(value)
     }
@@ -258,7 +258,7 @@ object Utils {
             addr = addr.drop(1)
             addr = addr.dropLast(addr.count() - addr.lastIndexOf("]"))
         }
-        val regV6 = Regex("^((?:[0-9A-Fa-f]{1,4}))?((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))?((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$")
+        val regV6 = Regex("^([0-9A-Fa-f]{1,4})?(:[0-9A-Fa-f]{1,4})*::([0-9A-Fa-f]{1,4})?(:[0-9A-Fa-f]{1,4})*|([0-9A-Fa-f]{1,4})(:[0-9A-Fa-f]{1,4}){7}$")
         return regV6.matches(addr)
     }
 
@@ -333,7 +333,6 @@ object Utils {
         }
     }
 
-
     /**
      * readTextFromAssets
      */
@@ -402,7 +401,7 @@ object Utils {
         }
     }
 
-    fun getLocale(context: Context): Locale =
+    fun getLocale(): Locale =
         when (settingsStorage?.decodeString(AppConfig.PREF_LANGUAGE) ?: "auto") {
             "auto" ->  getSysLocale()
             "en" -> Locale("en")

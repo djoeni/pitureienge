@@ -26,9 +26,9 @@ class V2RayTestService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.getIntExtra("key", 0)) {
             MSG_MEASURE_CONFIG -> {
-                val contentPair = intent.getSerializableExtra("content") as Pair<String, String>
+                val contentPair = intent.getSerializableExtra("content") as Pair<*, *>
                 realTestScope.launch {
-                    val result = SpeedtestUtil.realPing(contentPair.second)
+                    val result = SpeedtestUtil.realPing(contentPair.second as String)
                     MessageUtil.sendMsg2UI(this@V2RayTestService, MSG_MEASURE_CONFIG_SUCCESS, Pair(contentPair.first, result))
                 }
             }

@@ -85,6 +85,19 @@ jobs:
         with:
           path: ~/.gradle
           key: gradle-${{ hashFiles('**/*.gradle.kts') }}
+      - name: Signing properties
+        env:
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+        run: |
+          touch keystore.properties
+          echo keyAlias="$SIGNING_KEY_ALIAS" > keystore.properties
+          echo keyPassword="$SIGNING_KEY_PASSWORD" >> keystore.properties
+          echo storePassword="$SIGNING_STORE_PASSWORD" >> keystore.properties
+
+          echo "cat keystore.properties"
+          cat keystore.properties
       - name: Release Build
         env:
           BUILD_PLUGIN: none

@@ -26,10 +26,10 @@ class RoutingSettingsFragment : Fragment() {
         private const val routing_arg = "routing_arg"
     }
 
-    val defaultSharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(requireContext()) }
+    private val defaultSharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(requireContext()) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         binding = FragmentRoutingSettingsBinding.inflate(layoutInflater)
         return binding.root// inflater.inflate(R.layout.fragment_routing_settings, container, false)
@@ -52,11 +52,13 @@ class RoutingSettingsFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_routing, menu)
         return super.onCreateOptionsMenu(menu, inflater)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.save_routing -> {
             saveRouting()
@@ -87,7 +89,7 @@ class RoutingSettingsFragment : Fragment() {
         activity?.toast(R.string.toast_success)
     }
 
-    fun scanQRcode(forReplace: Boolean): Boolean {
+    private fun scanQRcode(forReplace: Boolean): Boolean {
 //        try {
 //            startActivityForResult(Intent("com.google.zxing.client.android.SCAN")
 //                    .addCategory(Intent.CATEGORY_DEFAULT)
@@ -122,7 +124,7 @@ class RoutingSettingsFragment : Fragment() {
         }
     }
 
-    fun setDefaultRules(): Boolean {
+    private fun setDefaultRules(): Boolean {
         var url = AppConfig.v2rayCustomRoutingListUrl
         var tag = ""
         when (requireArguments().getString(routing_arg)) {

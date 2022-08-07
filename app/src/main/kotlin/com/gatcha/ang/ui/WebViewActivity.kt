@@ -20,7 +20,6 @@ class WebViewActivity : BaseActivity() {
         webView.webViewClient = WebViewClient()
         webView.loadUrl("https://howdy.id/")
 
-        webView.settings.javaScriptEnabled = true
         webView.settings.builtInZoomControls = true
     }
 

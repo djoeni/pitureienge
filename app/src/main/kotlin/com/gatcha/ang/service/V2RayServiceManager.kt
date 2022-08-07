@@ -24,6 +24,7 @@ import com.gatcha.ang.util.MmkvManager
 import com.gatcha.ang.util.Utils
 import com.gatcha.ang.util.V2rayConfigUtil
 import go.Seq
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -65,7 +66,7 @@ object V2RayServiceManager {
         } else {
             context.toast(R.string.toast_services_start)
         }
-        val intent = if (settingsStorage?.decodeString(AppConfig.PREF_MODE) ?: "VPN" == "VPN") {
+        val intent = if ((settingsStorage?.decodeString(AppConfig.PREF_MODE) ?: "VPN") == "VPN") {
             Intent(context.applicationContext, V2RayVpnService::class.java)
         } else {
             Intent(context.applicationContext, V2RayProxyOnlyService::class.java)
@@ -158,6 +159,7 @@ object V2RayServiceManager {
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     fun stopV2rayPoint() {
         val service = serviceControl?.get()?.getService() ?: return
 
@@ -223,6 +225,7 @@ object V2RayServiceManager {
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun measureV2rayDelay() {
         GlobalScope.launch(Dispatchers.IO) {
             val service = serviceControl?.get()?.getService() ?: return@launch

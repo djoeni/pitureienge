@@ -3,7 +3,6 @@ package com.gatcha.ang.ui
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.View
 import androidx.activity.viewModels
 import androidx.preference.*
 import com.gatcha.ang.AppConfig
@@ -37,10 +36,6 @@ class SettingsActivity : BaseActivity() {
         private val socksPort by lazy { findPreference<EditTextPreference>(AppConfig.PREF_SOCKS_PORT) }
         private val httpPort by lazy { findPreference<EditTextPreference>(AppConfig.PREF_HTTP_PORT) }
         private val routingCustom by lazy { findPreference<Preference>(AppConfig.PREF_ROUTING_CUSTOM) }
-        //        val licenses: Preference by lazy { findPreference(PREF_LICENSES) }
-//        val feedback: Preference by lazy { findPreference(PREF_FEEDBACK) }
-//        val tgGroup: Preference by lazy { findPreference(PREF_TG_GROUP) }
-
         private val mode by lazy { findPreference<ListPreference>(AppConfig.PREF_MODE) }
 
         override fun onCreatePreferences(bundle: Bundle?, s: String?) {
@@ -50,28 +45,6 @@ class SettingsActivity : BaseActivity() {
                 startActivity(Intent(activity, RoutingSettingsActivity::class.java))
                 false
             }
-
-//            licenses.onClick {
-//                val fragment = LicensesDialogFragment.Builder(act)
-//                        .setNotices(R.raw.licenses)
-//                        .setIncludeOwnLicense(false)
-//                        .build()
-//                fragment.show((act as AppCompatActivity).supportFragmentManager, null)
-//            }
-//
-//            feedback.onClick {
-//                Utils.openUri(activity, "https://github.com/2dust/v2rayNG/issues")
-//            }
-//            tgGroup.onClick {
-//                //                Utils.openUri(activity, "https://t.me/v2rayN")
-//                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("tg:resolve?domain=v2rayN"))
-//                try {
-//                    startActivity(intent)
-//                } catch (e: Exception) {
-//                    e.printStackTrace()
-//                    toast(R.string.toast_tg_app_not_found)
-//                }
-//            }
 
             perAppProxy?.setOnPreferenceClickListener {
                 startActivity(Intent(activity, PerAppProxyActivity::class.java))
@@ -176,7 +149,7 @@ class SettingsActivity : BaseActivity() {
         }
     }
 
-    fun onModeHelpClicked(view: View) {
+    fun onModeHelpClicked() {
         Utils.openUri(this, AppConfig.v2rayNGWikiMode)
     }
 }

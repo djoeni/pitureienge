@@ -10,7 +10,7 @@ import rx.Observable
 import java.util.*
 
 object AppManagerUtil {
-    fun loadNetworkAppList(ctx: Context): ArrayList<AppInfo> {
+    private fun loadNetworkAppList(ctx: Context): ArrayList<AppInfo> {
         val packageManager = ctx.packageManager
         val packages = packageManager.getInstalledPackages(PackageManager.GET_PERMISSIONS)
         val apps = ArrayList<AppInfo>()
@@ -35,7 +35,7 @@ object AppManagerUtil {
         it.onNext(loadNetworkAppList(ctx))
     }
 
-    val PackageInfo.hasInternetPermission: Boolean
+    private val PackageInfo.hasInternetPermission: Boolean
         get() {
             val permissions = requestedPermissions
             return permissions?.any { it == Manifest.permission.INTERNET } ?: false

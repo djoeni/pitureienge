@@ -17,7 +17,7 @@ class ScScannerActivity : BaseActivity() {
         importQRcode()
     }
 
-    fun importQRcode(): Boolean {
+    private fun importQRcode(): Boolean {
         RxPermissions(this)
                 .request(Manifest.permission.CAMERA)
                 .subscribe {
