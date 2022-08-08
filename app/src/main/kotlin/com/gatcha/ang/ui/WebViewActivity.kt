@@ -21,6 +21,7 @@ class WebViewActivity : BaseActivity() {
         webView.loadUrl("https://howdy.id/")
 
         webView.settings.builtInZoomControls = true
+        webView.settings.javaScriptEnabled = true
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
