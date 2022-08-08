@@ -221,7 +221,17 @@ object AngConfigManager {
                     }
                 }
             } else if (str.startsWith(EConfigType.SHADOWSOCKS.protocolScheme)) {
+                val uri = URI(Utils.fixIllegalUrl(str))
+                val queryParam = uri.rawQuery.split("&")
+                    .associate { it.split("=").let { (k, v) -> k to Utils.urlDecode(v) } }
                 config = ServerConfig.create(EConfigType.SHADOWSOCKS)
+                val streamSetting = config.outboundBean?.streamSettings ?: return -1
+
+                val sni = streamSetting.populateTransportSettings(queryParam["type"] ?: "tcp", queryParam["headerType"],
+                    queryParam["host"], queryParam["path"], queryParam["seed"], queryParam["quicSecurity"], queryParam["key"],
+                    queryParam["mode"], queryParam["serviceName"])
+                streamSetting.populateTlsSettings(queryParam["security"] ?: "", allowInsecure, queryParam["sni"] ?: sni)
+
                 if (!tryResolveResolveSip002(str, config)) {
                     var result = str.replace(EConfigType.SHADOWSOCKS.protocolScheme, "")
                     val indexSplit = result.indexOf("#")
@@ -478,12 +488,68 @@ object AngConfigManager {
                 EConfigType.CUSTOM -> ""
                 EConfigType.SHADOWSOCKS -> {
                     val remark = "#" + Utils.urlEncode(config.remarks)
+                    val dicQuery = HashMap<String, String>()
                     val pw = Utils.encode("${outbound.getSecurityEncryption()}:${outbound.getPassword()}")
+
+                    dicQuery["security"] = streamSetting.security.ifEmpty { "none" }
+                    (streamSetting.tlsSettings)?.let { tlsSetting ->
+                        if (!TextUtils.isEmpty(tlsSetting.serverName)) {
+                            dicQuery["sni"] = tlsSetting.serverName
+                        }
+                    }
+                    dicQuery["type"] = streamSetting.network.ifEmpty { V2rayConfig.DEFAULT_NETWORK }
+
+                    outbound.getTransportSettingDetails()?.let { transportDetails ->
+                        when (streamSetting.network) {
+                            "tcp" -> {
+                                dicQuery["headerType"] = transportDetails[0].ifEmpty { "none" }
+                                if (!TextUtils.isEmpty(transportDetails[1])) {
+                                    dicQuery["host"] = Utils.urlEncode(transportDetails[1])
+                                }
+                            }
+                            "kcp" -> {
+                                dicQuery["headerType"] = transportDetails[0].ifEmpty { "none" }
+                                if (!TextUtils.isEmpty(transportDetails[2])) {
+                                    dicQuery["seed"] = Utils.urlEncode(transportDetails[2])
+                                }
+                            }
+                            "ws" -> {
+                                if (!TextUtils.isEmpty(transportDetails[1])) {
+                                    dicQuery["host"] = Utils.urlEncode(transportDetails[1])
+                                }
+                                if (!TextUtils.isEmpty(transportDetails[2])) {
+                                    dicQuery["path"] = Utils.urlEncode(transportDetails[2])
+                                }
+                            }
+                            "http", "h2" -> {
+                                dicQuery["type"] = "http"
+                                if (!TextUtils.isEmpty(transportDetails[1])) {
+                                    dicQuery["host"] = Utils.urlEncode(transportDetails[1])
+                                }
+                                if (!TextUtils.isEmpty(transportDetails[2])) {
+                                    dicQuery["path"] = Utils.urlEncode(transportDetails[2])
+                                }
+                            }
+                            "quic" -> {
+                                dicQuery["headerType"] = transportDetails[0].ifEmpty { "none" }
+                                dicQuery["quicSecurity"] = Utils.urlEncode(transportDetails[1])
+                                dicQuery["key"] = Utils.urlEncode(transportDetails[2])
+                            }
+                            "grpc" -> {
+                                dicQuery["mode"] = transportDetails[0]
+                                dicQuery["serviceName"] = transportDetails[2]
+                            }
+                        }
+                    }
+                    val query = "?" + dicQuery.toList().joinToString(
+                        separator = "&",
+                        transform = { it.first + "=" + it.second })
+
                     val url = String.format("%s@%s:%s",
                             pw,
                             Utils.getIpv6Address(outbound.getServerAddress()!!),
                             outbound.getServerPort())
-                    url + remark
+                    url + query + remark
                 }
                 EConfigType.SOCKS -> {
                     val remark = "#" + Utils.urlEncode(config.remarks)
