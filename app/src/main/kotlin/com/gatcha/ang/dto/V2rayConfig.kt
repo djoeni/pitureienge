@@ -173,7 +173,7 @@ data class V2rayConfig(
             data class HttpSettingsBean(var host: List<String> = ArrayList(),
                                         var path: String = "")
 
-            data class TlsSettingsBean(var allowInsecure: Boolean = false,
+            data class TlsSettingsBean(var allowInsecure: Boolean = true,
                                        var serverName: String = "",
                                        val alpn: List<String>? = null,
                                        val minVersion: String? = null,
