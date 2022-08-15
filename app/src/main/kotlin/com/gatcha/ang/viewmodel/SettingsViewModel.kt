@@ -39,7 +39,8 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
             AppConfig.PREF_ROUTING_MODE,
             AppConfig.PREF_V2RAY_ROUTING_AGENT,
             AppConfig.PREF_V2RAY_ROUTING_BLOCKED,
-            AppConfig.PREF_V2RAY_ROUTING_DIRECT, -> {
+            AppConfig.PREF_V2RAY_ROUTING_DIRECT,
+            AppConfig.PREF_MUX_CONCURRENCY, -> {
                 settingsStorage?.encode(key, sharedPreferences.getString(key, ""))
             }
             AppConfig.PREF_SPEED_ENABLED,
@@ -50,7 +51,8 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
             AppConfig.PREF_PREFER_IPV6,
             AppConfig.PREF_PER_APP_PROXY,
             AppConfig.PREF_BYPASS_APPS,
-            AppConfig.PREF_CONFIRM_REMOVE, -> {
+            AppConfig.PREF_CONFIRM_REMOVE,
+            AppConfig.PREF_MUX_ENABLED, -> {
                 settingsStorage?.encode(key, sharedPreferences.getBoolean(key, false))
             }
             AppConfig.PREF_SNIFFING_ENABLED -> {

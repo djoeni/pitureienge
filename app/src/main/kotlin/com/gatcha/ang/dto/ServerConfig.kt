@@ -21,6 +21,7 @@ data class ServerConfig(
                     return ServerConfig(
                             configType = configType,
                             outboundBean = V2rayConfig.OutboundBean(
+                                    mux = V2rayConfig.OutboundBean.MuxBean(),
                                     protocol = configType.name.lowercase(),
                                     settings = V2rayConfig.OutboundBean.OutSettingsBean(
                                             vnext = listOf(V2rayConfig.OutboundBean.OutSettingsBean.VnextBean(
@@ -32,6 +33,7 @@ data class ServerConfig(
                     return ServerConfig(
                             configType = configType,
                             outboundBean = V2rayConfig.OutboundBean(
+                                    mux = V2rayConfig.OutboundBean.MuxBean(),
                                     protocol = configType.name.lowercase(),
                                     settings = V2rayConfig.OutboundBean.OutSettingsBean(
                                             servers = listOf(V2rayConfig.OutboundBean.OutSettingsBean.ServersBean())),

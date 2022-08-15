@@ -66,6 +66,8 @@ object V2rayConfigUtil {
 
         httpRequestObject(outbound)
 
+        mux(outbound)
+
         v2rayConfig.outbounds[0] = outbound
 
         routing(v2rayConfig)
@@ -421,6 +423,21 @@ object V2rayConfigUtil {
                     }
                 outbound.streamSettings?.tcpSettings?.header?.request?.headers?.Host = host!!
             }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        }
+        return true
+    }
+
+    private fun mux(outbound: V2rayConfig.OutboundBean): Boolean {
+        try {
+            val enableMux = settingsStorage?.decodeBool(AppConfig.PREF_MUX_ENABLED, false)
+                ?: true
+            val setConcurrency = Utils.parseInt(settingsStorage?.decodeString(AppConfig.PREF_MUX_CONCURRENCY), AppConfig.MUX_CONCURRENCY.toInt())
+            outbound.mux?.enabled = enableMux
+            outbound.mux?.concurrency = setConcurrency
 
         } catch (e: Exception) {
             e.printStackTrace()

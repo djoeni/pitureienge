@@ -98,6 +98,8 @@
     <string name="summary_pref_per_app_proxy">General: Checked App is proxy, unchecked direct connection; \nbypass mode: checked app directly connected, unchecked proxy. \nThe option to automatically select the proxy application in the menu</string>
 
     <string name="title_pref_mux_enabled">Enable Mux</string>
+    <string name="title_pref_mux_concurrency" translatable="false">Concurrency</string>
+    <string name="title_mux_settings" translatable="false">Mux Settings</string>
     <string name="summary_pref_mux_enabled">Enable maybe speed up network and switch network maybe flash</string>
 
     <string name="title_pref_speed_enabled">Enable speed display</string>

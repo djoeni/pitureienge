@@ -76,7 +76,8 @@
       "network": "tcp"
     },
     "mux": {
-      "enabled": false
+      "enabled": false,
+      "concurrency": 8
     }
   },
   {

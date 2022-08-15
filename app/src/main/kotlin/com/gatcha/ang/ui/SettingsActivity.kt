@@ -37,6 +37,7 @@ class SettingsActivity : BaseActivity() {
         private val httpPort by lazy { findPreference<EditTextPreference>(AppConfig.PREF_HTTP_PORT) }
         private val routingCustom by lazy { findPreference<Preference>(AppConfig.PREF_ROUTING_CUSTOM) }
         private val mode by lazy { findPreference<ListPreference>(AppConfig.PREF_MODE) }
+        private val muxConcurrency by lazy { findPreference<EditTextPreference>(AppConfig.PREF_MUX_CONCURRENCY) }
 
         override fun onCreatePreferences(bundle: Bundle?, s: String?) {
             addPreferencesFromResource(R.xml.pref_settings)
@@ -92,6 +93,11 @@ class SettingsActivity : BaseActivity() {
                 updateMode(newValue.toString())
                 true
             }
+            muxConcurrency?.setOnPreferenceChangeListener { _, any ->
+                val nval = any as String
+                muxConcurrency?.summary = if (TextUtils.isEmpty(nval)) AppConfig.MUX_CONCURRENCY else nval
+                true
+            }
             mode?.dialogLayoutResource = R.layout.preference_with_help_link
             //loglevel.summary = "LogLevel"
         }
@@ -106,6 +112,7 @@ class SettingsActivity : BaseActivity() {
             localDnsPort?.summary = defaultSharedPreferences.getString(AppConfig.PREF_LOCAL_DNS_PORT, AppConfig.PORT_LOCAL_DNS)
             socksPort?.summary = defaultSharedPreferences.getString(AppConfig.PREF_SOCKS_PORT, AppConfig.PORT_SOCKS)
             httpPort?.summary = defaultSharedPreferences.getString(AppConfig.PREF_HTTP_PORT, AppConfig.PORT_HTTP)
+            muxConcurrency?.summary = defaultSharedPreferences.getString(AppConfig.PREF_MUX_CONCURRENCY, AppConfig.MUX_CONCURRENCY)
 
             if (TextUtils.isEmpty(remoteDnsString)) {
                 remoteDnsString = AppConfig.DNS_AGENT
@@ -124,6 +131,9 @@ class SettingsActivity : BaseActivity() {
             }
             if (TextUtils.isEmpty(httpPort?.summary)) {
                 httpPort?.summary = AppConfig.PORT_HTTP
+            }
+            if (TextUtils.isEmpty(muxConcurrency?.summary)) {
+                muxConcurrency?.summary = AppConfig.MUX_CONCURRENCY
             }
         }
 
