@@ -266,38 +266,52 @@ object AngConfigManager {
                     }
                 }
             } else if (str.startsWith(EConfigType.SOCKS.protocolScheme)) {
-                var result = str.replace(EConfigType.SOCKS.protocolScheme, "")
-                val indexSplit = result.indexOf("#")
+                val uri = URI(Utils.fixIllegalUrl(str))
+                val queryParam = uri.rawQuery.split("&")
+                    .associate { it.split("=").let { (k, v) -> k to Utils.urlDecode(v) } }
                 config = ServerConfig.create(EConfigType.SOCKS)
-                if (indexSplit > 0) {
-                    try {
-                        config.remarks = Utils.urlDecode(result.substring(indexSplit + 1, result.length))
-                    } catch (e: Exception) {
-                        e.printStackTrace()
+                val streamSetting = config.outboundBean?.streamSettings ?: return -1
+
+                val sni = streamSetting.populateTransportSettings(queryParam["type"] ?: "tcp", queryParam["headerType"],
+                    queryParam["host"], queryParam["path"], queryParam["seed"], queryParam["quicSecurity"], queryParam["key"],
+                    queryParam["mode"], queryParam["serviceName"])
+                streamSetting.populateTlsSettings(queryParam["security"] ?: "", allowInsecure, queryParam["sni"] ?: sni)
+
+                if (!tryResolveSocks(str, config)) {
+                    var result = str.replace(EConfigType.SOCKS.protocolScheme, "")
+                    val indexSplit = result.indexOf("#")
+
+                    if (indexSplit > 0) {
+                        try {
+                            config.remarks = Utils.urlDecode(result.substring(indexSplit + 1, result.length))
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+
+                        result = result.substring(0, indexSplit)
                     }
 
-                    result = result.substring(0, indexSplit)
+                    //part decode
+                    val indexS = result.indexOf("@")
+                    result = if (indexS > 0) {
+                        Utils.decode(result.substring(0, indexS)) + result.substring(indexS, result.length)
+                    } else {
+                        Utils.decode(result)
+                    }
+
+                    val legacyPattern = "^(.*):(.*)@(.+?):(\\d+?)$".toRegex()
+                    val match = legacyPattern.matchEntire(result) ?: return R.string.toast_incorrect_protocol
+
+                    config.outboundBean?.settings?.servers?.get(0)?.let { server ->
+                        server.address = match.groupValues[3].removeSurrounding("[", "]")
+                        server.port = match.groupValues[4].toInt()
+                        val socksUsersBean = V2rayConfig.OutboundBean.OutSettingsBean.ServersBean.SocksUsersBean()
+                        socksUsersBean.user = match.groupValues[1].lowercase()
+                        socksUsersBean.pass = match.groupValues[2]
+                        server.users = listOf(socksUsersBean)
+                    }
                 }
 
-                //part decode
-                val indexS = result.indexOf("@")
-                if (indexS > 0) {
-                    result = Utils.decode(result.substring(0, indexS)) + result.substring(indexS, result.length)
-                } else {
-                    result = Utils.decode(result)
-                }
-
-                val legacyPattern = "^(.*):(.*)@(.+?):(\\d+?)$".toRegex()
-                val match = legacyPattern.matchEntire(result) ?: return R.string.toast_incorrect_protocol
-
-                config.outboundBean?.settings?.servers?.get(0)?.let { server ->
-                    server.address = match.groupValues[3].removeSurrounding("[", "]")
-                    server.port = match.groupValues[4].toInt()
-                    val socksUsersBean = V2rayConfig.OutboundBean.OutSettingsBean.ServersBean.SocksUsersBean()
-                    socksUsersBean.user = match.groupValues[1].lowercase()
-                    socksUsersBean.pass = match.groupValues[2]
-                    server.users = listOf(socksUsersBean)
-                }
             } else if (str.startsWith(EConfigType.TROJAN.protocolScheme)) {
                 val uri = URI(Utils.fixIllegalUrl(str))
                 config = ServerConfig.create(EConfigType.TROJAN)
@@ -458,6 +472,45 @@ object AngConfigManager {
         }
     }
 
+    private fun tryResolveSocks(str: String, config: ServerConfig): Boolean {
+        try {
+            val uri = URI(Utils.fixIllegalUrl(str))
+            config.remarks = Utils.urlDecode(uri.fragment ?: "")
+
+            val users: String
+            val password: String
+            if (uri.userInfo.contains(":")) {
+                val arrUserInfo = uri.userInfo.split(":").map { it.trim() }
+                if (arrUserInfo.count() != 2) {
+                    return false
+                }
+                users = arrUserInfo[0]
+                password = Utils.urlDecode(arrUserInfo[1])
+            } else {
+                val base64Decode = Utils.decode(uri.userInfo)
+                val arrUserInfo = base64Decode.split(":").map { it.trim() }
+                if (arrUserInfo.count() < 2) {
+                    return false
+                }
+                users = arrUserInfo[0]
+                password = base64Decode.substringAfter(":")
+            }
+
+            config.outboundBean?.settings?.servers?.get(0)?.let { server ->
+                server.address = uri.idnHost
+                server.port = uri.port
+                val socksUsersBean = V2rayConfig.OutboundBean.OutSettingsBean.ServersBean.SocksUsersBean()
+                socksUsersBean.user = users
+                socksUsersBean.pass = password
+                server.users = listOf(socksUsersBean)
+            }
+            return true
+        } catch (e: Exception) {
+            Log.d(AppConfig.ANG_PACKAGE, e.toString())
+            return false
+        }
+    }
+
     /**
      * share config
      */
@@ -555,12 +608,68 @@ object AngConfigManager {
                 }
                 EConfigType.SOCKS -> {
                     val remark = "#" + Utils.urlEncode(config.remarks)
+                    val dicQuery = HashMap<String, String>()
                     val pw = Utils.encode("${outbound.settings?.servers?.get(0)?.users?.get(0)?.user}:${outbound.getPassword()}")
+
+                    dicQuery["security"] = streamSetting.security.ifEmpty { "none" }
+                    (streamSetting.tlsSettings)?.let { tlsSetting ->
+                        if (!TextUtils.isEmpty(tlsSetting.serverName)) {
+                            dicQuery["sni"] = tlsSetting.serverName
+                        }
+                    }
+                    dicQuery["type"] = streamSetting.network.ifEmpty { V2rayConfig.DEFAULT_NETWORK }
+
+                    outbound.getTransportSettingDetails()?.let { transportDetails ->
+                        when (streamSetting.network) {
+                            "tcp" -> {
+                                dicQuery["headerType"] = transportDetails[0].ifEmpty { "none" }
+                                if (!TextUtils.isEmpty(transportDetails[1])) {
+                                    dicQuery["host"] = Utils.urlEncode(transportDetails[1])
+                                }
+                            }
+                            "kcp" -> {
+                                dicQuery["headerType"] = transportDetails[0].ifEmpty { "none" }
+                                if (!TextUtils.isEmpty(transportDetails[2])) {
+                                    dicQuery["seed"] = Utils.urlEncode(transportDetails[2])
+                                }
+                            }
+                            "ws" -> {
+                                if (!TextUtils.isEmpty(transportDetails[1])) {
+                                    dicQuery["host"] = Utils.urlEncode(transportDetails[1])
+                                }
+                                if (!TextUtils.isEmpty(transportDetails[2])) {
+                                    dicQuery["path"] = Utils.urlEncode(transportDetails[2])
+                                }
+                            }
+                            "http", "h2" -> {
+                                dicQuery["type"] = "http"
+                                if (!TextUtils.isEmpty(transportDetails[1])) {
+                                    dicQuery["host"] = Utils.urlEncode(transportDetails[1])
+                                }
+                                if (!TextUtils.isEmpty(transportDetails[2])) {
+                                    dicQuery["path"] = Utils.urlEncode(transportDetails[2])
+                                }
+                            }
+                            "quic" -> {
+                                dicQuery["headerType"] = transportDetails[0].ifEmpty { "none" }
+                                dicQuery["quicSecurity"] = Utils.urlEncode(transportDetails[1])
+                                dicQuery["key"] = Utils.urlEncode(transportDetails[2])
+                            }
+                            "grpc" -> {
+                                dicQuery["mode"] = transportDetails[0]
+                                dicQuery["serviceName"] = transportDetails[2]
+                            }
+                        }
+                    }
+                    val query = "?" + dicQuery.toList().joinToString(
+                        separator = "&",
+                        transform = { it.first + "=" + it.second })
+
                     val url = String.format("%s@%s:%s",
                         pw,
                         Utils.getIpv6Address(outbound.getServerAddress()!!),
                         outbound.getServerPort())
-                    url + remark
+                    url + query + remark
                 }
                 EConfigType.VLESS,
                 EConfigType.TROJAN -> {
@@ -576,7 +685,7 @@ object AngConfigManager {
                         dicQuery["encryption"] =
                             if (outbound.getSecurityEncryption().isNullOrEmpty()) "none"
                             else outbound.getSecurityEncryption().orEmpty()
-                    } else if (config.configType == EConfigType.TROJAN) {
+                    } else  {
                         config.outboundBean?.settings?.servers?.get(0)?.flow?.let {
                             if (!TextUtils.isEmpty(it)) {
                                 dicQuery["flow"] = it
