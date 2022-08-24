@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <CheckBoxPreference
+    <SwitchPreference
             android:key="pref_speed_enabled"
             android:summary="@string/summary_pref_speed_enabled"
             android:title="@string/title_pref_speed_enabled" />
 
-    <CheckBoxPreference
+    <SwitchPreference
             android:defaultValue="true"
             android:key="pref_sniffing_enabled"
             android:summary="@string/summary_pref_sniffing_enabled"
             android:title="@string/title_pref_sniffing_enabled" />
 
     <PreferenceCategory android:title="@string/title_mux_settings">
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="pref_mux_enabled"
             android:summary="@string/summary_pref_mux_enabled"
@@ -26,17 +26,17 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/title_vpn_settings">
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="pref_per_app_proxy"
             android:summary="@string/summary_pref_per_app_proxy"
             android:title="@string/title_pref_per_app_proxy" />
 
-        <CheckBoxPreference
+        <SwitchPreference
                 android:key="pref_local_dns_enabled"
                 android:summary="@string/summary_pref_local_dns_enabled"
                 android:title="@string/title_pref_local_dns_enabled" />
 
-        <CheckBoxPreference
+        <SwitchPreference
                 android:key="pref_fake_dns_enabled"
                 android:summary="@string/summary_pref_fake_dns_enabled"
                 android:title="@string/title_pref_fake_dns_enabled" />
@@ -79,18 +79,18 @@
 
     <PreferenceCategory android:title="@string/title_advanced">
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="pref_prefer_ipv6"
             android:summary="@string/summary_pref_prefer_ipv6"
             android:title="@string/title_pref_prefer_ipv6" />
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="pref_proxy_sharing_enabled"
             android:summary="@string/summary_pref_proxy_sharing_enabled"
             android:title="@string/title_pref_proxy_sharing_enabled" />
 
-        <!--<CheckBoxPreference
+        <!--<SwitchPreference
             android:defaultValue="false"
             android:key="pref_allow_insecure"
             android:summary="@string/summary_pref_allow_insecure"
@@ -142,7 +142,7 @@
             android:summary="%s"
             android:title="@string/title_language" />
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="pref_confirm_remove"
             android:summary="@string/summary_pref_confirm_remove"
             android:title="@string/title_pref_confirm_remove" />

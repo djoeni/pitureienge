@@ -25,12 +25,12 @@ class SettingsActivity : BaseActivity() {
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
-        private val perAppProxy by lazy { findPreference<CheckBoxPreference>(AppConfig.PREF_PER_APP_PROXY) }
-        private val localDns by lazy { findPreference<CheckBoxPreference>(AppConfig.PREF_LOCAL_DNS_ENABLED) }
-        private val fakeDns by lazy { findPreference<CheckBoxPreference>(AppConfig.PREF_FAKE_DNS_ENABLED) }
+        private val perAppProxy by lazy { findPreference<SwitchPreference>(AppConfig.PREF_PER_APP_PROXY) }
+        private val localDns by lazy { findPreference<SwitchPreference>(AppConfig.PREF_LOCAL_DNS_ENABLED) }
+        private val fakeDns by lazy { findPreference<SwitchPreference>(AppConfig.PREF_FAKE_DNS_ENABLED) }
         private val localDnsPort by lazy { findPreference<EditTextPreference>(AppConfig.PREF_LOCAL_DNS_PORT) }
         private val vpnDns by lazy { findPreference<EditTextPreference>(AppConfig.PREF_VPN_DNS) }
-        //        val autoRestart by lazy { findPreference(PREF_AUTO_RESTART) as CheckBoxPreference }
+        //        val autoRestart by lazy { findPreference(PREF_AUTO_RESTART) as SwitchPreference }
         private val remoteDns by lazy { findPreference<EditTextPreference>(AppConfig.PREF_REMOTE_DNS) }
         private val domesticDns by lazy { findPreference<EditTextPreference>(AppConfig.PREF_DOMESTIC_DNS) }
         private val socksPort by lazy { findPreference<EditTextPreference>(AppConfig.PREF_SOCKS_PORT) }
