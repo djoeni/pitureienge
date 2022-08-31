@@ -118,11 +118,12 @@ dependencies {
     implementation 'com.blacksquircle.ui:language-json:2.2.0'
 }
 
-//buildscript {
-//    repositories {
-//        google()
-//        mavenCentral()
-//        maven { url 'https://maven.google.com' }
-//        maven { url 'https://jitpack.io' }
-//    }
-//}
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://maven.google.com' }
+        maven { url 'https://jitpack.io' }
+        jcenter()
+    }
+}
