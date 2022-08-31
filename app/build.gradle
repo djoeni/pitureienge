@@ -19,8 +19,8 @@ android {
         minSdkVersion 21
         targetSdkVersion Integer.parseInt("$targetSdkVer")
         multiDexEnabled true
-        versionCode 472
-        versionName "1.7.18-05"
+        versionCode 473
+        versionName "1.7.19-06"
 
         setProperty("archivesBaseName", "GatchaNG-$versionName")
     }
@@ -89,7 +89,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.preference:preference-ktx:1.2.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    implementation 'androidx.fragment:fragment-ktx:1.5.1'
+    implementation 'androidx.fragment:fragment-ktx:1.5.2'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.viewpager2:viewpager2:1.1.0-beta01'
 
@@ -118,12 +118,11 @@ dependencies {
     implementation 'com.blacksquircle.ui:language-json:2.2.0'
 }
 
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-        maven { url 'https://maven.google.com' }
-        maven { url 'https://jitpack.io' }
-        jcenter()
-    }
-}
+//buildscript {
+//    repositories {
+//        google()
+//        mavenCentral()
+//        maven { url 'https://maven.google.com' }
+//        maven { url 'https://jitpack.io' }
+//    }
+//}
