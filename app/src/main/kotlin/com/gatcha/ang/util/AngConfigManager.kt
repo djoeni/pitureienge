@@ -232,11 +232,12 @@ object AngConfigManager {
                     .associate { it.split("=").let { (k, v) -> k to Utils.urlDecode(v) } }
                 config = ServerConfig.create(EConfigType.SHADOWSOCKS)
                 val streamSetting = config.outboundBean?.streamSettings ?: return -1
+                var fingerprint = streamSetting.tlsSettings?.fingerprint
 
                 val sni = streamSetting.populateTransportSettings(queryParam["type"] ?: "tcp", queryParam["headerType"],
                     queryParam["host"], queryParam["path"], queryParam["seed"], queryParam["quicSecurity"], queryParam["key"],
                     queryParam["mode"], queryParam["serviceName"])
-                streamSetting.populateTlsSettings(queryParam["security"] ?: "", allowInsecure, queryParam["sni"] ?: sni)
+                streamSetting.populateTlsSettings(queryParam["security"] ?: "", allowInsecure, queryParam["sni"] ?: sni, fingerprint, queryParam["alpn"])
 
                 if (!tryResolveResolveSip002(str, config)) {
                     var result = str.replace(EConfigType.SHADOWSOCKS.protocolScheme, "")
@@ -275,11 +276,12 @@ object AngConfigManager {
                     .associate { it.split("=").let { (k, v) -> k to Utils.urlDecode(v) } }
                 config = ServerConfig.create(EConfigType.SOCKS)
                 val streamSetting = config.outboundBean?.streamSettings ?: return -1
+                var fingerprint = streamSetting.tlsSettings?.fingerprint
 
                 val sni = streamSetting.populateTransportSettings(queryParam["type"] ?: "tcp", queryParam["headerType"],
                     queryParam["host"], queryParam["path"], queryParam["seed"], queryParam["quicSecurity"], queryParam["key"],
                     queryParam["mode"], queryParam["serviceName"])
-                streamSetting.populateTlsSettings(queryParam["security"] ?: "", allowInsecure, queryParam["sni"] ?: sni)
+                streamSetting.populateTlsSettings(queryParam["security"] ?: "", allowInsecure, queryParam["sni"] ?: sni, fingerprint, queryParam["alpn"])
 
                 if (!tryResolveSocks(str, config)) {
                     var result = str.replace(EConfigType.SOCKS.protocolScheme, "")
