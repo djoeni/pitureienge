@@ -10,7 +10,7 @@ android {
     buildToolsVersion "$buildToolsVer"
 
     compileOptions {
-        targetCompatibility = "11"
+        targetCompatibility = "8"
         sourceCompatibility = "8"
     }
 
@@ -19,8 +19,8 @@ android {
         minSdkVersion 21
         targetSdkVersion Integer.parseInt("$targetSdkVer")
         multiDexEnabled true
-        versionCode 475
-        versionName "1.7.20-07"
+        versionCode 480
+        versionName "1.7.23-08"
 
         setProperty("archivesBaseName", "GatchaNG-$versionName")
     }
