@@ -422,5 +422,8 @@ object Utils {
             .replace(" ","%20")
             .replace("|","%7C")
     }
-}
 
+    fun removeWhiteSpace(str: String?): String? {
+    return str?.replace(" ", "")
+    }
+}
