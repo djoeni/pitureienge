@@ -14,9 +14,7 @@ import com.gatcha.ang.R
 import com.gatcha.ang.dto.EConfigType
 import com.gatcha.ang.dto.ServerConfig
 import com.gatcha.ang.dto.V2rayConfig
-import com.gatcha.ang.dto.V2rayConfig.Companion.DEFAULT_FLOW
 import com.gatcha.ang.dto.V2rayConfig.Companion.DEFAULT_PORT
-import com.gatcha.ang.dto.V2rayConfig.Companion.XTLS
 import com.gatcha.ang.extension.toast
 import com.gatcha.ang.util.MmkvManager
 import com.gatcha.ang.util.MmkvManager.ID_MAIN
@@ -284,11 +282,7 @@ class ServerActivity : BaseActivity() {
             vnext.users[0].security = securitys[sp_security?.selectedItemPosition ?: 0]
         } else if (config.configType == EConfigType.VLESS) {
             vnext.users[0].encryption = et_security?.text.toString().trim()
-            if (streamSecuritys[sp_stream_security?.selectedItemPosition ?: 0] == XTLS) {
-                vnext.users[0].flow = flows[sp_flow?.selectedItemPosition ?: 0].ifBlank { DEFAULT_FLOW }
-            } else {
-                vnext.users[0].flow = ""
-            }
+            vnext.users[0].flow = flows[sp_flow?.selectedItemPosition ?: 0]
         }
     }
 
@@ -310,8 +304,8 @@ class ServerActivity : BaseActivity() {
         } else if (config.configType == EConfigType.TROJAN) {
             server.password = et_id.text.toString().trim()
             server.flow =
-                    if (streamSecuritys[sp_stream_security?.selectedItemPosition ?: 0] == XTLS) {
-                        flows[sp_flow?.selectedItemPosition ?: 0].ifBlank { DEFAULT_FLOW }
+                    if (streamSecuritys[sp_stream_security?.selectedItemPosition ?: 0] == V2rayConfig.XTLS) {
+                        flows[sp_flow?.selectedItemPosition ?: 0]
                     } else {
                         ""
                     }

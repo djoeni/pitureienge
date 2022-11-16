@@ -114,6 +114,8 @@
         <item>xtls-rprx-direct-udp443</item>
         <item>xtls-rprx-splice</item>
         <item>xtls-rprx-splice-udp443</item>
+        <item>xtls-rprx-vision</item>
+        <item>xtls-rprx-vision-udp443</item>
     </string-array>
 
 
