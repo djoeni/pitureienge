@@ -19,8 +19,8 @@ android {
         minSdkVersion 21
         targetSdkVersion Integer.parseInt("$targetSdkVer")
         multiDexEnabled true
-        versionCode 486
-        versionName "1.7.26-09"
+        versionCode 487
+        versionName "1.7.27-10"
 
         setProperty("archivesBaseName", "GatchaNG-$versionName")
     }
