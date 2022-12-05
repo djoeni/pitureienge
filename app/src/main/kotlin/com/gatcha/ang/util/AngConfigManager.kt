@@ -552,7 +552,7 @@ object AngConfigManager {
                     val json = Gson().toJson(vmessQRCode)
                     Utils.encode(json)
                 }
-                EConfigType.CUSTOM -> ""
+                EConfigType.CUSTOM, EConfigType.WIREGUARD -> ""
                 EConfigType.SHADOWSOCKS -> {
                     val remark = "#" + Utils.urlEncode(config.remarks)
                     val dicQuery = HashMap<String, String>()
