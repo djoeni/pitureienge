@@ -20,7 +20,7 @@ android {
         targetSdkVersion Integer.parseInt("$targetSdkVer")
         multiDexEnabled true
         versionCode 488
-        versionName "1.7.28-11"
+        versionName "1.7.28-12"
 
         setProperty("archivesBaseName", "GatchaNG-$versionName")
     }
