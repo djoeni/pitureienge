@@ -426,4 +426,10 @@ object Utils {
     fun removeWhiteSpace(str: String?): String? {
     return str?.replace(" ", "")
     }
+
+    fun idnToASCII(str: String): String {
+        val url = URL(str)
+        return URL(url.protocol, IDN.toASCII(url.host, IDN.ALLOW_UNASSIGNED), url.port, url.file)
+            .toExternalForm()
+    }
 }
