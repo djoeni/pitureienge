@@ -237,7 +237,8 @@ object AngConfigManager {
                 val sni = streamSetting.populateTransportSettings(queryParam["type"] ?: "tcp", queryParam["headerType"],
                     queryParam["host"], queryParam["path"], queryParam["seed"], queryParam["quicSecurity"], queryParam["key"],
                     queryParam["mode"], queryParam["serviceName"])
-                streamSetting.populateTlsSettings(queryParam["security"] ?: "", allowInsecure, queryParam["sni"] ?: sni, fingerprint, queryParam["alpn"])
+                streamSetting.populateTlsSettings(queryParam["security"] ?: "", allowInsecure,
+                        queryParam["sni"] ?: sni, fingerprint, queryParam["alpn"], null, null, null)
 
                 if (!tryResolveResolveSip002(str, config)) {
                     var result = str.replace(EConfigType.SHADOWSOCKS.protocolScheme, "")
@@ -281,7 +282,8 @@ object AngConfigManager {
                 val sni = streamSetting.populateTransportSettings(queryParam["type"] ?: "tcp", queryParam["headerType"],
                     queryParam["host"], queryParam["path"], queryParam["seed"], queryParam["quicSecurity"], queryParam["key"],
                     queryParam["mode"], queryParam["serviceName"])
-                streamSetting.populateTlsSettings(queryParam["security"] ?: "", allowInsecure, queryParam["sni"] ?: sni, fingerprint, queryParam["alpn"])
+                streamSetting.populateTlsSettings(queryParam["security"] ?: "", allowInsecure,
+                        queryParam["sni"] ?: sni, fingerprint, queryParam["alpn"], null, null, null)
 
                 if (!tryResolveSocks(str, config)) {
                     var result = str.replace(EConfigType.SOCKS.protocolScheme, "")
