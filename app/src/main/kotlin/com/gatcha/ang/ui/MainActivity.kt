@@ -293,6 +293,15 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             true
         }
 
+        R.id.del_duplicate_config-> {
+            AlertDialog.Builder(this).setMessage(R.string.del_config_comfirm)
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    mainViewModel.removeDuplicateServer()
+                }
+                .show()
+            true
+        }
+
         R.id.del_invalid_config -> {
             AlertDialog.Builder(this).setMessage(R.string.del_config_comfirm)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
