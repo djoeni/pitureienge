@@ -73,6 +73,7 @@ android {
         viewBinding true
     }
     namespace 'com.gatcha.ang'
+    testNamespace 'com.gatcha.angTest'
 }
 
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
