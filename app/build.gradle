@@ -72,6 +72,8 @@ android {
     buildFeatures {
         viewBinding true
     }
+    namespace 'com.gatcha.ang'
+}
 
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
         kotlinOptions {
