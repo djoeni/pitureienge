@@ -134,6 +134,20 @@
                 android:summary="%s"
                 android:title="@string/title_mode" />
 
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/title_ui_settings">
+
+        <SwitchPreference
+            android:key="pref_confirm_remove"
+            android:summary="@string/summary_pref_confirm_remove"
+            android:title="@string/title_pref_confirm_remove" />
+
+        <SwitchPreference
+            android:key="pref_start_scan_immediate"
+            android:summary="@string/summary_pref_start_scan_immediate"
+            android:title="@string/title_pref_start_scan_immediate" />
+
         <ListPreference
             android:defaultValue="auto"
             android:entries="@array/language_select"
@@ -142,10 +156,6 @@
             android:summary="%s"
             android:title="@string/title_language" />
 
-        <SwitchPreference
-            android:key="pref_confirm_remove"
-            android:summary="@string/summary_pref_confirm_remove"
-            android:title="@string/title_pref_confirm_remove" />
-
     </PreferenceCategory>
+    
 </PreferenceScreen>
