@@ -11,7 +11,6 @@ import android.content.Intent
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
-import com.google.zxing.WriterException
 import com.tencent.mmkv.MMKV
 import com.gatcha.ang.AppConfig
 import com.gatcha.ang.databinding.ActivityTaskerBinding
@@ -65,7 +64,7 @@ class TaskerActivity : BaseActivity() {
                     listview?.setItemChecked(pos, true)
                 }
             }
-        } catch (e: WriterException) {
+        } catch (e: Exception) {
             e.printStackTrace()
 
         }
