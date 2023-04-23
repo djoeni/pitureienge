@@ -852,7 +852,7 @@ object AngConfigManager {
             if (TextUtils.isEmpty(conf)) {
                 return null
             }
-            return Utils.createQRCode(conf)
+            return QRCodeDecoder.createQRCode(conf)
 
         } catch (e: Exception) {
             e.printStackTrace()
